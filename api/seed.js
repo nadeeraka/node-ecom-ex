@@ -1,4 +1,9 @@
 const mongoose = require("mongoose");
+const connect = require("../db/connect");
+let Product = require("../models/product/product");
+
+connect();
+
 var products = [
   new Product({
     imagePath: "https://upload.wikimedia.org/wikipedia/en/5/5e/Gothiccover.png",
@@ -35,3 +40,13 @@ var products = [
     price: 50
   })
 ];
+
+const logic = async () => {
+  for (let i = 0; i < products.length; i++) {
+    let temp = await products[i].save();
+    if (i === products.length) {
+      mongoose.disconnect();
+    }
+  }
+};
+logic();
